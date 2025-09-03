@@ -39,7 +39,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'  // 响应式布局
-    // 就这些，不要添加复杂依赖
+    
+    // AI功能需要的网络库
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+    
+    // JSON解析（用于AI响应）
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 ```
 
@@ -71,7 +77,9 @@ data class Card(
     val imageResId: Int,
     val audioResId: Int,
     val interactionType: String = "tap",  // 暂时只支持tap
-    val interactionTarget: String? = null  // 例如"red_car"表示点击红色汽车
+    val interactionTarget: String? = null,  // 例如"red_car"表示点击红色汽车
+    val aiGenerated: Boolean = false,  // 是否AI生成的内容
+    val textContent: String? = null  // AI生成的文本内容
 )
 
 // Progress.kt
@@ -427,6 +435,119 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         mediaPlayer?.release()
         handler.removeCallbacksAndMessages(null)
+    }
+}
+```
+
+### 2.4 AI服务实现（简化版）
+```kotlin
+// SimpleAIService.kt
+class SimpleAIService(private val context: Context) {
+    
+    private val client = OkHttpClient()
+    private val gson = Gson()
+    
+    // 从配置文件读取API密钥
+    private val apiKey: String by lazy {
+        context.assets.open("ai_config.json").use { stream ->
+            val config = gson.fromJson(stream.reader(), AiConfig::class.java)
+            config.apiKey
+        }
+    }
+    
+    // 生成教育内容
+    suspend fun generateContent(topic: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val prompt = """
+                为3岁男孩生成关于"$topic"的教育内容：
+                1. 15-20秒的朗读文本
+                2. 词汇简单，句子短
+                3. 语气温暖友好
+                4. 结尾有一个简单互动
+                """.trimIndent()
+                
+                // 这里使用百度文心一言的API为例
+                val response = callBaiduAPI(prompt)
+                response
+            } catch (e: Exception) {
+                Log.e("AI", "Failed to generate content", e)
+                null
+            }
+        }
+    }
+    
+    // 生成鼓励语
+    suspend fun generateEncouragement(): String {
+        val encouragements = listOf(
+            "你真棒！",
+            "做得好！",
+            "太厉害了！",
+            "继续加油！"
+        )
+        
+        // 简单实现：随机选择
+        // 也可以调用AI生成更多样化的鼓励
+        return encouragements.random()
+    }
+    
+    // TTS示例（使用百度语音合成）
+    suspend fun textToSpeech(text: String): ByteArray? {
+        return withContext(Dispatchers.IO) {
+            try {
+                // 调用TTS API
+                val audioData = callTTSAPI(text)
+                audioData
+            } catch (e: Exception) {
+                Log.e("AI", "TTS failed", e)
+                null
+            }
+        }
+    }
+    
+    data class AiConfig(
+        val apiKey: String,
+        val apiSecret: String
+    )
+}
+```
+
+### 2.5 在MainActivity中使用AI
+```kotlin
+class MainActivity : AppCompatActivity() {
+    
+    private val aiService by lazy { SimpleAIService(this) }
+    
+    // ... 其他代码 ...
+    
+    // 显示AI生成的鼓励
+    private fun showReward(onComplete: () -> Unit) {
+        lifecycleScope.launch {
+            val encouragement = aiService.generateEncouragement()
+            
+            // 可以用TTS播放鼓励语
+            val audio = aiService.textToSpeech(encouragement)
+            audio?.let { playGeneratedAudio(it) }
+            
+            // 显示奖励动画
+            binding.rewardContainer.apply {
+                visibility = View.VISIBLE
+                // ... 动画代码 ...
+            }
+        }
+    }
+    
+    // 开发时批量生成内容
+    private fun generateCardContents() {
+        val topics = listOf("红色消防车", "数字1", "勇敢的小狮子")
+        
+        lifecycleScope.launch {
+            topics.forEach { topic ->
+                val content = aiService.generateContent(topic)
+                Log.d("AI", "Generated for $topic: $content")
+                // 保存到文件供后续使用
+            }
+        }
     }
 }
 ```
