@@ -11,7 +11,7 @@
 - [快速实现指南](./quick-implementation-guide.md) —— 完整代码示例和实现步骤
 - [精简版架构设计](./architecture-simplified.md) —— 简单清晰的架构说明
 - [响应式设计指南](./responsive-design-guide.md) —— 手机和平板适配方案
-- [AI配置指南](./ai-config-simplified.md) —— AI服务集成方案
+- [AI服务配置](./ai-config.md) —— OpenAI兼容协议配置方案
 
 ### 3. 内容制作
 - [内容制作指南](./content-creation-guide.md) —— 图片和音频制作方法（含AI辅助）
