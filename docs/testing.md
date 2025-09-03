@@ -65,3 +65,10 @@
 - 报告：测试清单、缺陷列表、覆盖率、性能截图
 - 回归：修复后全量自动化；核心E2E复跑
 
+## 9. 配置化测试（AI）
+- 切换 baseUrl 与 apiKey 后 1 分钟内生效；
+- Chat/Embeddings 正常返回（200）且 P95 延迟达标；
+- 超时/重试与 providerChain 回退策略有效；
+- 日志不输出 apiKey；崩溃与错误信息无敏感泄露；
+- 详见：docs/ai-config.md
+

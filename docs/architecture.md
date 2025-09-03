@@ -136,3 +136,10 @@ session_limit_minutes: 10|15|20
 ## 11. 开放问题
 - RAG知识库边界与素材来源确权；家长报表模板A/B；弱机最低支持清单。
 
+## 12. AI配置（OpenAI兼容）
+- 客户端与服务端均支持可定制 `apiBaseUrl` + `apiKey`；优先自建/代理网关；
+- 配置来源：远程配置 > 环境变量/构建参数 > 本地 assets（调试）；
+- 容错：超时≤3s、1次重试、providerChain 顺序回退；
+- 安全：禁止硬编码生产 apiKey；仅上传必要的摘要字段；
+- 参考：docs/ai-config.md。
+

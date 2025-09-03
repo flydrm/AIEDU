@@ -22,6 +22,12 @@ graph LR
 - ktlint/detekt启用；.editorconfig统一缩进与行宽；中文注释强制
 - 分支：main/develop/feature-*/bugfix-*/release/x.y.z
 
+### 2.1 环境变量（AI）
+- AI_API_BASE_URL、AI_API_KEY（必需）
+- AI_API_CONNECT/READ/WRITE_TIMEOUT_MS、AI_API_RETRIES、AI_API_RETRY_BACKOFF_MS
+- AI_API_PROVIDER_CHAIN（逗号分隔）
+- 详见：docs/ai-config.md
+
 ## 3. 任务拆分（INVEST）
 - 首页与导航（3人天）
 - 主题与卡片列表（3人天）

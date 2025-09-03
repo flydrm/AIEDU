@@ -8,3 +8,5 @@
 - [发布流程](./release.md) —— 参考 `sop/projects/08-release-process.md`
 
 范围：3岁男孩MVP，主题围绕“勇敢/逻辑/基础知识”，融合红色偏好、端侧AI（TFLite/ONNX/Porcupine）、云侧AI（OpenAI协议网关）。
+
+- [AI服务配置](./ai-config.md) —— OpenAI兼容，支持可定制 apiBaseUrl + apiKey

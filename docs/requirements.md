@@ -121,6 +121,7 @@ sequenceDiagram
 - 端侧：TFLite/ONNX Runtime Mobile、MediaPipe Tasks、Porcupine/Vosk（KWS）。
 - 云侧：OpenAI兼容网关→ Gemini-2.5-Pro/GPT-5-Pro；Embeddings（Qwen3-Embed）；Reranker（BAAI）。
 - 数据：向量库（RAG可选）；埋点后端与指标看板。
+- AI服务配置：支持可定制 `apiBaseUrl` + `apiKey`（详见 docs/ai-config.md），以适配国内网络环境与多供应商切换。
 
 ## 7. 工作量评估（粗估）
 | 任务 | 负责人 | 工时 | 备注 |

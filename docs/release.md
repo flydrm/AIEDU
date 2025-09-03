@@ -39,3 +39,9 @@
 - 数据对比：留存/时长/完成率/崩溃
 - 问题清单与行动项：性能、稳定、内容产能、AI成本
 
+## 9. 区域化支持（AI）
+- CN 区域默认使用可达的 OpenAI 兼容网关 baseUrl；
+- 在发布检查清单中验证 baseUrl、apiKey 配置项可替换且能快速回退；
+- 对于跨区域构建，分别维护 prod/stage 的 providerChain；
+- 参考：docs/ai-config.md
+
