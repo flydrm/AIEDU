@@ -28,12 +28,57 @@ android {
     }
     
     buildTypes {
-        release {
+        debug {
             isMinifyEnabled = false
+            isDebuggable = true
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
+            
+            // Debug构建配置
+            buildConfigField("boolean", "ENABLE_LOGGING", "true")
+            buildConfigField("String", "API_BASE_URL", "\"https://api.openai.com/v1/\"")
+            
+            // 资源配置
+            resValue("string", "app_name", "AI启蒙时光(开发版)")
+        }
+        
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+            
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            
+            // Release构建配置
+            buildConfigField("boolean", "ENABLE_LOGGING", "false")
+            buildConfigField("String", "API_BASE_URL", "\"https://api.openai.com/v1/\"")
+            
+            // 资源配置
+            resValue("string", "app_name", "AI启蒙时光")
+            
+            // 签名配置（需要配置签名文件）
+            // signingConfig = signingConfigs.getByName("release")
+        }
+    }
+    
+    // 产品风味（可选，用于不同版本）
+    flavorDimensions += "version"
+    productFlavors {
+        create("standard") {
+            dimension = "version"
+            // 标准版配置
+        }
+        
+        create("premium") {
+            dimension = "version"
+            applicationIdSuffix = ".premium"
+            versionNameSuffix = "-高级版"
+            
+            // 高级版特有配置
+            buildConfigField("boolean", "PREMIUM_FEATURES", "true")
         }
     }
     

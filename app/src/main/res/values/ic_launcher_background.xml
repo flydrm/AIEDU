@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 应用图标背景色
+  ~ 
+  ~ 功能说明：
+  ~ 定义自适应图标的背景颜色
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<resources>
+    <color name="ic_launcher_background">#FFF5E6</color>
+</resources>

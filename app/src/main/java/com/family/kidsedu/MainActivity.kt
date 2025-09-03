@@ -81,19 +81,14 @@ class MainActivity : AppCompatActivity() {
     /** AI服务（延迟初始化） */
     private val aiService by lazy { SimpleAIService(this) }
     
+    /** 时长管理器 */
+    private lateinit var timeManager: TimeManager
+    
     /**
-     * 预定义的教育卡片列表
-     * TODO: 后续从资源文件或数据库加载
+     * 教育卡片列表
+     * 使用推荐顺序，优先展示孩子感兴趣的内容
      */
-    private val cards = listOf(
-        Card(1, "红色消防车", R.drawable.ic_launcher_foreground, R.raw.notification, 
-            category = "交通工具", textContent = "这是一辆红色的消防车，它会帮助大家灭火救人！"),
-        Card(2, "数字1", R.drawable.ic_launcher_foreground, R.raw.notification,
-            category = "数字", textContent = "这是数字1，像一根小棍子！"),
-        Card(3, "勇敢的小狮子", R.drawable.ic_launcher_foreground, R.raw.notification,
-            category = "动物", textContent = "小狮子很勇敢，它是森林之王！"),
-        // 更多卡片将在实际开发时添加
-    )
+    private val cards = CardDataProvider.getRecommendedOrder()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,6 +103,9 @@ class MainActivity : AppCompatActivity() {
         // 设置屏幕方向（平板推荐横屏）
         configureScreenOrientation()
         
+        // 初始化时长管理器
+        initTimeManager()
+        
         // 恢复学习进度
         restoreProgress()
         
@@ -117,8 +115,8 @@ class MainActivity : AppCompatActivity() {
         // 显示当前卡片
         showCard(currentCardIndex)
         
-        // 启动学习时长监控
-        startTimeMonitoring()
+        // 启动学习计时
+        timeManager.startStudying()
         
         Log.d(TAG, "MainActivity创建完成，当前卡片索引: $currentCardIndex")
     }
@@ -145,16 +143,45 @@ class MainActivity : AppCompatActivity() {
     }
     
     /**
+     * 初始化时长管理器
+     */
+    private fun initTimeManager() {
+        timeManager = TimeManager(this).apply {
+            setTimeListener(object : TimeManager.TimeListener {
+                override fun onTimeUpdate(sessionMinutes: Int, todayMinutes: Int) {
+                    // 可以在UI上显示学习时长
+                    Log.d(TAG, "学习时长更新 - 本次: $sessionMinutes 分钟, 今日: $todayMinutes 分钟")
+                }
+                
+                override fun onGentleReminder() {
+                    // 温和提醒可以用Toast或Snackbar
+                    Log.d(TAG, "温和提醒：注意休息")
+                }
+                
+                override fun onForceRest() {
+                    // 强制休息
+                    pauseAudio()
+                }
+                
+                override fun onRestComplete() {
+                    // 休息完成，恢复播放
+                    resumeAudio()
+                }
+                
+                override fun onEndStudy() {
+                    // 结束学习
+                    finish()
+                }
+            })
+        }
+    }
+    
+    /**
      * 恢复学习进度
      */
     private fun restoreProgress() {
         currentCardIndex = Progress.getCurrentCardIndex()
         startTime = System.currentTimeMillis()
-        
-        // 检查是否已达到今日学习时长限制
-        if (Progress.hasReachedDailyLimit(DAILY_STUDY_LIMIT_MINUTES)) {
-            showTimeLimitDialog()
-        }
     }
     
     /**
@@ -335,20 +362,11 @@ class MainActivity : AppCompatActivity() {
      * 播放点击动画
      */
     private fun playClickAnimation() {
-        binding.cardImage.apply {
-            animate()
-                .scaleX(0.95f)
-                .scaleY(0.95f)
-                .setDuration(100)
-                .withEndAction {
-                    animate()
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .setDuration(100)
-                        .start()
-                }
-                .start()
-        }
+        // 播放点击音效
+        App.soundManager.playClickSound()
+        
+        // 播放点击动画
+        AnimationUtils.playClickAnimation(binding.cardImage)
     }
     
     /**
@@ -357,6 +375,9 @@ class MainActivity : AppCompatActivity() {
     private fun showReward() {
         // 标记当前卡片为已完成
         Progress.markCardCompleted(cards[currentCardIndex].id)
+        
+        // 播放奖励音效
+        App.soundManager.playRewardSound()
         
         // 生成鼓励语（可以使用AI生成）
         lifecycleScope.launch {
@@ -367,19 +388,8 @@ class MainActivity : AppCompatActivity() {
         // 显示奖励容器
         binding.rewardContainer.visibility = View.VISIBLE
         
-        // 星星动画
-        binding.starReward.apply {
-            scaleX = 0f
-            scaleY = 0f
-            rotation = 0f
-            
-            animate()
-                .scaleX(1f)
-                .scaleY(1f)
-                .rotation(360f)
-                .setDuration(500)
-                .start()
-        }
+        // 使用动画工具类播放星星动画
+        AnimationUtils.popAndRotate(binding.starReward)
         
         // 自动隐藏奖励（可选）
         handler.postDelayed({
@@ -432,49 +442,7 @@ class MainActivity : AppCompatActivity() {
         showCard(currentCardIndex)
     }
     
-    /**
-     * 启动学习时长监控
-     */
-    private fun startTimeMonitoring() {
-        // 每分钟检查一次
-        handler.postDelayed(object : Runnable {
-            override fun run() {
-                checkStudyTime()
-                handler.postDelayed(this, 60000) // 1分钟
-            }
-        }, 60000)
-    }
-    
-    /**
-     * 检查学习时长
-     */
-    private fun checkStudyTime() {
-        val elapsedMinutes = ((System.currentTimeMillis() - startTime) / 60000).toInt()
-        val todayMinutes = Progress.getTodayPlayTime() + elapsedMinutes
-        
-        if (todayMinutes >= DAILY_STUDY_LIMIT_MINUTES) {
-            showTimeLimitDialog()
-        }
-    }
-    
-    /**
-     * 显示时长限制对话框
-     */
-    private fun showTimeLimitDialog() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.time_limit_title)
-            .setMessage(getString(R.string.time_limit_message, DAILY_STUDY_LIMIT_MINUTES))
-            .setPositiveButton(R.string.time_limit_rest) { _, _ ->
-                // 保存学习时间并退出
-                savePlayTimeAndExit()
-            }
-            .setNegativeButton(R.string.time_limit_continue) { _, _ ->
-                // 继续学习，重置开始时间
-                startTime = System.currentTimeMillis()
-            }
-            .setCancelable(false)
-            .show()
-    }
+
     
     /**
      * 显示完成对话框
@@ -499,12 +467,17 @@ class MainActivity : AppCompatActivity() {
     }
     
     /**
-     * 保存学习时间并退出
+     * 暂停音频
      */
-    private fun savePlayTimeAndExit() {
-        val elapsedMinutes = ((System.currentTimeMillis() - startTime) / 60000).toInt()
-        Progress.addPlayTime(elapsedMinutes)
-        finish()
+    private fun pauseAudio() {
+        mediaPlayer?.pause()
+    }
+    
+    /**
+     * 恢复音频
+     */
+    private fun resumeAudio() {
+        mediaPlayer?.start()
     }
     
     override fun onPause() {
@@ -512,15 +485,11 @@ class MainActivity : AppCompatActivity() {
         // 暂停音频播放
         mediaPlayer?.pause()
         
+        // 暂停学习计时
+        timeManager.pauseStudying()
+        
         // 保存当前进度
         Progress.saveCurrentCardIndex(currentCardIndex)
-        
-        // 记录学习时间
-        val elapsedMinutes = ((System.currentTimeMillis() - startTime) / 60000).toInt()
-        if (elapsedMinutes > 0) {
-            Progress.addPlayTime(elapsedMinutes)
-            startTime = System.currentTimeMillis() // 重置开始时间
-        }
         
         Log.d(TAG, "onPause: 保存进度 $currentCardIndex")
     }
@@ -530,6 +499,9 @@ class MainActivity : AppCompatActivity() {
         // 恢复音频播放
         mediaPlayer?.start()
         
+        // 恢复学习计时
+        timeManager.startStudying()
+        
         Log.d(TAG, "onResume: 恢复播放")
     }
     
@@ -537,6 +509,10 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         // 释放音频资源
         stopAudio()
+        
+        // 停止学习计时并保存
+        timeManager.stopStudying()
+        timeManager.release()
         
         // 清除所有延迟任务
         handler.removeCallbacksAndMessages(null)

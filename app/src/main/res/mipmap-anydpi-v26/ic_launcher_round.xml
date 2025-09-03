@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 圆形自适应图标配置
+  ~ 
+  ~ 功能说明：
+  ~ Android 8.0+ 的圆形自适应图标定义
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background"/>
+    <foreground android:drawable="@drawable/ic_launcher_foreground"/>
+</adaptive-icon>

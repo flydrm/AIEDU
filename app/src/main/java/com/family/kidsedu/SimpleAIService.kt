@@ -71,6 +71,9 @@ class SimpleAIService(private val context: Context) {
         loadApiConfig()
     }
     
+    /** 缓存管理器 */
+    private val cacheManager = CacheManager(context)
+    
     /**
      * 生成教育内容
      * 
@@ -82,7 +85,7 @@ class SimpleAIService(private val context: Context) {
         return withContext(Dispatchers.IO) {
             try {
                 // 先检查缓存
-                val cached = loadFromCache("content_$topic")
+                val cached = cacheManager.getContent("$topic$age")
                 if (cached != null) {
                     Log.d(TAG, "使用缓存内容: $topic")
                     return@withContext cached
@@ -97,7 +100,7 @@ class SimpleAIService(private val context: Context) {
                 // 内容审核
                 if (content != null && isContentSafe(content)) {
                     // 保存到缓存
-                    saveToCache("content_$topic", content)
+                    cacheManager.saveContent("$topic$age", content)
                     return@withContext content
                 }
                 
@@ -291,22 +294,7 @@ class SimpleAIService(private val context: Context) {
         }
     }
     
-    /**
-     * 从缓存加载内容
-     */
-    private fun loadFromCache(key: String): String? {
-        // TODO: 实现缓存功能
-        // 可以使用SharedPreferences或文件存储
-        return null
-    }
-    
-    /**
-     * 保存内容到缓存
-     */
-    private fun saveToCache(key: String, content: String) {
-        // TODO: 实现缓存功能
-        // 保存时记录时间戳，用于判断是否过期
-    }
+
     
     /**
      * API配置数据类

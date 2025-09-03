@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 应用图标前景
+  ~ 
+  ~ 功能说明：
+  ~ 自适应图标的前景层，显示一个可爱的学习图标
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- 背景圆形装饰 -->
+    <path
+        android:fillColor="#FF6B6B"
+        android:pathData="M54,24 C70,24 84,38 84,54 C84,70 70,84 54,84 C38,84 24,70 24,54 C24,38 38,24 54,24 Z"
+        android:fillAlpha="0.1"/>
+    
+    <!-- 书本形状 -->
+    <path
+        android:fillColor="#FF6B6B"
+        android:pathData="M54,35 L40,40 L40,65 L54,60 L68,65 L68,40 L54,35 Z"
+        android:strokeColor="#FF5252"
+        android:strokeWidth="2"/>
+    
+    <!-- 书本中线 -->
+    <path
+        android:strokeColor="#FF5252"
+        android:strokeWidth="2"
+        android:pathData="M54,35 L54,60"/>
+    
+    <!-- AI标志（星星） -->
+    <path
+        android:fillColor="#FFD93D"
+        android:pathData="M54,42 L56,47 L61,47 L57,50 L59,55 L54,52 L49,55 L51,50 L47,47 L52,47 Z"/>
+    
+    <!-- 笑脸符号 -->
+    <path
+        android:strokeColor="#FF5252"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M48,52 Q54,56 60,52"/>
+    
+</vector>
