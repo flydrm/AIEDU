@@ -10,7 +10,7 @@
 ### 1.1 需求背景
 - 面向3岁小男孩的启蒙教育App，需要在短时注意力窗口内，围绕"勇敢（社会情绪）+ 逻辑启蒙 + 基础知识"提供沉浸内容与轻交互。
 - 用户偏好红色：在不改变学习目标的前提下，进行轻量个性化（UI点缀、内容排序、奖励视觉），保证可访问性与不过度刺激。
-- AI最大化用于内容TTS批量合成、端侧KWS、个性化推荐（Bandit）、家长报告摘要、内容安全审核；云侧统一OpenAI协议网关（Gemini-2.5-Pro主，GPT-5-Pro备；Qwen3-Embed；BAAI Reranker）。
+- AI最大化用于内容TTS批量合成、端侧KWS、个性化推荐（Bandit）、家长报告摘要、内容安全审核；云侧统一OpenAI协议网关（GEMINI-2.5-PRO主，GPT-5-PRO备；Qwen3-Embedding-8B；BAAI/bge-reranker-v2-m3；grok-4-imageGen）。
 
 ### 1.2 目标用户
 - 主要用户：3岁小男孩；喜欢车辆/恐龙/鲜艳色彩，尤其偏爱红色；手眼协调尚在发展，倾向一次一项的简单互动。
@@ -121,9 +121,10 @@ sequenceDiagram
 - **架构说明**：本应用采用纯客户端架构，无自建服务端，所有功能在Android App内实现。
 - **端侧AI**：TFLite/ONNX Runtime Mobile（关键词唤醒）、MediaPipe Tasks（可选）、Porcupine/Vosk（KWS）。
 - **第三方API**：
-  - OpenAI兼容网关（LLM文本生成）：Gemini-2.5-Pro（主）/GPT-5-Pro（备）
-  - 嵌入向量服务：Qwen3-Embed
-  - 重排序服务：BAAI Reranker（可选）
+  - OpenAI兼容网关（LLM文本生成）：GEMINI-2.5-PRO（主）/GPT-5-PRO（备）
+  - 嵌入向量服务：Qwen3-Embedding-8B
+  - 重排序服务：BAAI/bge-reranker-v2-m3
+  - 图像生成服务：grok-4-imageGen
   - CDN/OSS：内容包下载存储
 - **本地存储**：Room Database（结构化数据）、DataStore（配置）、File System（媒体资源）。
 - **AI服务配置**：支持可定制 `apiBaseUrl` + `apiKey`（详见 docs/ai-config.md），以适配国内网络环境与多供应商切换。

@@ -9,6 +9,13 @@
 - 在国内网络环境下稳定使用 OpenAI 兼容协议的 LLM/Embedding/Rerank/Image 服务。
 - 通过可配置的 apiBaseUrl + apiKey 实现多提供方切换与故障回退（自建/代理网关优先）。
 
+### 1.1 核心AI模型
+- **主模型**: GEMINI-2.5-PRO（Google最新模型，中文能力强）
+- **备用模型**: GPT-5-PRO（OpenAI旗舰模型，作为故障回退）
+- **嵌入模型**: Qwen3-Embedding-8B（阿里千问，中文语义理解优秀）
+- **重排模型**: BAAI/bge-reranker-v2-m3（北京人工智能研究院，中文优化）
+- **图像生成**: grok-4-imageGen（最新图像生成能力）
+
 ## 2. 配置来源优先级
 1) 运行时远程配置（仅内测/运维可见）  
 2) 环境变量或构建参数（CI/CD 注入）  
@@ -41,9 +48,10 @@
   },
   "models": {
     "chat": "gemini-2.5-pro",
-    "embed": "qwen3-embed",
-    "rerank": "baai-reranker",
-    "image": "grok-4-image"
+    "chat_backup": "gpt-5-pro",
+    "embed": "qwen3-embedding-8b",
+    "rerank": "bge-reranker-v2-m3",
+    "image": "grok-4-imagegen"
   },
   "providerChain": ["primary", "backup"]
 }
@@ -179,9 +187,10 @@ val retrofit = Retrofit.Builder()
   },
   "models": {
     "chat": "gemini-2.5-pro",
-    "embed": "qwen3-embed",
-    "rerank": "baai-reranker",
-    "image": "grok-4-image"
+    "chat_backup": "gpt-5-pro",
+    "embed": "qwen3-embedding-8b",
+    "rerank": "bge-reranker-v2-m3",
+    "image": "grok-4-imagegen"
   },
   "providerChain": ["primary", "backup"]
 }
@@ -357,7 +366,140 @@ class AIMetricsCollector {
 }
 ```
 
-## 10. 安全最佳实践
+## 10. 模型能力与应用场景
+
+### 10.1 GEMINI-2.5-PRO / GPT-5-PRO（内容生成）
+```kotlin
+// 生成教育内容
+suspend fun generateEducationalContent(topic: String): String {
+    val prompt = """
+    为3岁儿童创作关于"$topic"的教育内容：
+    - 语言简单，句子简短
+    - 包含互动元素
+    - 时长15-20秒朗读
+    - 融入"勇敢"或"逻辑"主题
+    """
+    
+    return aiClient.chatCompletion(
+        model = "gemini-2.5-pro",  // 主模型
+        fallbackModel = "gpt-5-pro",  // 备用
+        messages = listOf(Message("user", prompt)),
+        temperature = 0.7f
+    )
+}
+
+// 生成个性化学习建议
+suspend fun generateLearningAdvice(progress: LearningProgress): String {
+    val prompt = """
+    基于以下学习数据生成家长建议（2-3句）：
+    - 完成卡片：${progress.completedCards}
+    - 学习主题：${progress.topics}
+    - 偏好颜色：红色
+    - 互动成功率：${progress.successRate}%
+    """
+    
+    return aiClient.chatCompletion(model = "gemini-2.5-pro", ...)
+}
+```
+
+### 10.2 Qwen3-Embedding-8B（语义理解）
+```kotlin
+// 内容相似度计算
+suspend fun findSimilarContent(query: String, contents: List<String>): List<Pair<String, Float>> {
+    // 生成查询向量
+    val queryEmbedding = aiClient.createEmbedding(
+        model = "qwen3-embedding-8b",
+        input = query
+    )
+    
+    // 批量生成内容向量
+    val contentEmbeddings = aiClient.createEmbedding(
+        model = "qwen3-embedding-8b",
+        input = contents
+    )
+    
+    // 计算余弦相似度
+    return contents.zip(contentEmbeddings).map { (content, embedding) ->
+        content to cosineSimilarity(queryEmbedding, embedding)
+    }.sortedByDescending { it.second }
+}
+
+// 理解孩子的语音意图
+suspend fun understandIntent(transcript: String): Intent {
+    val embedding = aiClient.createEmbedding(
+        model = "qwen3-embedding-8b",
+        input = transcript
+    )
+    
+    // 与预定义意图比较
+    return matchIntent(embedding)
+}
+```
+
+### 10.3 BAAI/bge-reranker-v2-m3（精准排序）
+```kotlin
+// 重排推荐内容
+suspend fun rerankContent(query: String, candidates: List<Card>): List<Card> {
+    val reranked = aiClient.rerank(
+        model = "bge-reranker-v2-m3",
+        query = query,
+        documents = candidates.map { it.description },
+        topK = 10
+    )
+    
+    return reranked.results.map { result ->
+        candidates[result.index]
+    }
+}
+
+// 优化搜索结果
+suspend fun optimizeSearchResults(
+    userPreference: String,
+    searchResults: List<Content>
+): List<Content> {
+    // 根据用户偏好（如"红色"、"勇敢"）重排内容
+    return aiClient.rerank(
+        model = "bge-reranker-v2-m3",
+        query = userPreference,
+        documents = searchResults.map { it.summary }
+    ).sortedResults()
+}
+```
+
+### 10.4 grok-4-imageGen（创意图像）
+```kotlin
+// 生成教育图片
+suspend fun generateEducationalImage(concept: String): ByteArray? {
+    val prompt = """
+    儿童教育插图：
+    - 主题：$concept
+    - 风格：卡通、温暖、适合3岁儿童
+    - 色彩：明亮，突出红色元素
+    - 要求：简洁、安全、正面
+    """
+    
+    val response = aiClient.generateImage(
+        model = "grok-4-imagegen",
+        prompt = prompt,
+        size = "1024x1024",
+        quality = "standard",
+        style = "cartoon"
+    )
+    
+    return response.imageData
+}
+
+// 生成奖励贴纸
+suspend fun generateRewardSticker(achievement: String): ByteArray? {
+    return aiClient.generateImage(
+        model = "grok-4-imagegen",
+        prompt = "可爱的奖励贴纸：$achievement，红色星星主题，适合儿童",
+        size = "512x512"
+    )
+}
+```
+
+## 11. 安全最佳实践
 1. **密钥管理**
    - 禁止硬编码 apiKey
    - 使用加密存储或安全配置服务

@@ -97,10 +97,12 @@ LLM生成报告 → 无需报告
 - OkHttp (仅用于AI API调用)
 - 本地缓存 (减少API调用)
 
-// AI服务（选一个即可）
-- 百度AI开放平台 (国内稳定)
-- 或阿里云AI (备选)
-- 或讯飞开放平台 (TTS效果好)
+// AI服务配置
+- 主模型: GEMINI-2.5-PRO / GPT-5-PRO
+- 嵌入模型: Qwen3-Embedding-8B (语义理解)
+- 重排模型: BAAI/bge-reranker-v2-m3 (内容优化)
+- 图像生成: grok-4-imageGen (创意图片)
+- 统一通过OpenAI兼容协议调用
 ```
 
 ### 3.3 数据存储极简化

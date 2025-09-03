@@ -90,9 +90,9 @@
 
 ## 3. AI辅助内容生成（新增）
 
-### 3.1 使用AI生成文案
+### 3.1 使用AI生成文案（GEMINI-2.5-PRO）
 ```kotlin
-// 批量生成内容文案
+// 使用GEMINI-2.5-PRO批量生成内容文案
 val topics = listOf(
     "红色消防车", "霸王龙", "数字1", "数字2", 
     "勇敢的小狮子", "圆形", "蓝色的天空"
@@ -105,6 +105,7 @@ topics.forEach { topic ->
     - 语言：简单易懂
     - 包含：知识点+互动问题
     - 风格：温暖友好
+    - 融入红色元素（如适用）
     
     示例格式：
     小朋友你好！这是[内容介绍]。
@@ -112,8 +113,12 @@ topics.forEach { topic ->
     你能[互动问题]吗？
     """.trimIndent()
     
-    // 调用AI生成
-    val content = aiService.generateContent(topic)
+    // 调用GEMINI-2.5-PRO生成
+    val content = aiService.generateContent(
+        model = "gemini-2.5-pro",
+        prompt = prompt,
+        temperature = 0.7f
+    )
     saveToFile("$topic.txt", content)
 }
 ```
@@ -153,6 +158,59 @@ val optimizePrompt = """
 
 val optimizedContent = aiService.optimize(optimizePrompt)
 // 结果："看！这是一辆亮闪闪的红色消防车。听，它'呜呜呜'地叫着。你能学消防车的声音吗？"
+```
+
+### 3.4 使用AI生成图片（grok-4-imageGen）
+```kotlin
+// 生成教育卡片图片
+suspend fun generateCardImage(topic: String) {
+    val imagePrompt = """
+    为3岁儿童教育卡片生成插图：
+    主题：$topic
+    风格要求：
+    - 卡通风格，线条简单
+    - 色彩明亮，突出红色元素
+    - 主体清晰，背景简洁
+    - 安全友好，适合儿童
+    尺寸：1024x1024
+    """.trimIndent()
+    
+    val imageData = aiService.generateImage(
+        model = "grok-4-imagegen",
+        prompt = imagePrompt,
+        size = "1024x1024",
+        quality = "standard"
+    )
+    
+    saveImage("card_$topic.png", imageData)
+}
+
+// 生成奖励贴纸
+val stickerPrompt = "可爱的红色星星奖励贴纸，卡通风格，适合3岁儿童"
+val stickerImage = aiService.generateImage(
+    model = "grok-4-imagegen",
+    prompt = stickerPrompt,
+    size = "512x512"
+)
+```
+
+### 3.5 内容智能排序（bge-reranker-v2-m3）
+```kotlin
+// 根据孩子偏好优化内容顺序
+val contents = loadAllContents()
+val userPreference = "喜欢红色、消防车、恐龙"
+
+val optimizedOrder = aiService.rerank(
+    model = "bge-reranker-v2-m3",
+    query = userPreference,
+    documents = contents.map { it.description },
+    topK = 20
+)
+
+// 将最相关的内容排在前面
+val reorderedContents = optimizedOrder.results.map { result ->
+    contents[result.index]
+}
 ```
 
 ## 4. 音频制作
