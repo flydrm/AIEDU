@@ -38,8 +38,26 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'  // 响应式布局
     // 就这些，不要添加复杂依赖
 }
+```
+
+### 1.3 支持手机和平板
+```xml
+<!-- AndroidManifest.xml -->
+<supports-screens
+    android:smallScreens="true"
+    android:normalScreens="true"
+    android:largeScreens="true"
+    android:xlargeScreens="true"
+    android:anyDensity="true" />
+
+<!-- MainActivity 配置 -->
+<activity
+    android:name=".MainActivity"
+    android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+    android:exported="true">
 ```
 
 ## 2. 核心代码实现（Day 2-7）
@@ -81,10 +99,35 @@ object Progress {
 }
 ```
 
-### 2.2 主界面布局
+### 2.2 主界面布局（支持手机和平板）
+
+首先创建尺寸资源文件：
 ```xml
-<!-- activity_main.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- values/dimens.xml (手机默认) -->
+<resources>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="bottom_bar_height">60dp</dimen>
+    <dimen name="star_reward_size">150dp</dimen>
+    <dimen name="interaction_hint_size">60dp</dimen>
+    <dimen name="progress_text_size">18sp</dimen>
+</resources>
+
+<!-- values-sw600dp/dimens.xml (平板) -->
+<resources>
+    <dimen name="card_padding">32dp</dimen>
+    <dimen name="bottom_bar_height">80dp</dimen>
+    <dimen name="star_reward_size">250dp</dimen>
+    <dimen name="interaction_hint_size">100dp</dimen>
+    <dimen name="progress_text_size">24sp</dimen>
+</resources>
+```
+
+主布局文件：
+```xml
+<!-- layout/activity_main.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
@@ -92,23 +135,29 @@ object Progress {
     <!-- 卡片内容区域 -->
     <FrameLayout
         android:id="@+id/cardContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/bottomBar">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/card_padding"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
         
         <!-- 卡片图片 -->
         <ImageView
             android:id="@+id/cardImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:scaleType="fitCenter"
-            android:padding="16dp" />
+            android:adjustViewBounds="true" />
         
         <!-- 互动提示 -->
         <ImageView
             android:id="@+id/interactionHint"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/interaction_hint_size"
+            android:layout_height="@dimen/interaction_hint_size"
+            android:layout_gravity="center"
             android:src="@drawable/tap_hint"
             android:visibility="gone" />
             
@@ -117,20 +166,22 @@ object Progress {
     <!-- 底部进度条 -->
     <LinearLayout
         android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/bottom_bar_height"
         android:orientation="horizontal"
         android:background="@color/bottom_bar_bg"
         android:gravity="center_vertical"
-        android:padding="10dp">
+        android:paddingHorizontal="@dimen/card_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
         
         <TextView
             android:id="@+id/progressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1 / 20"
-            android:textSize="18sp" />
+            android:textSize="@dimen/progress_text_size" />
             
         <ProgressBar
             android:id="@+id/progressBar"
@@ -138,8 +189,8 @@ object Progress {
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp" />
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp" />
             
     </LinearLayout>
     
@@ -153,17 +204,17 @@ object Progress {
         
         <ImageView
             android:id="@+id/starReward"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/star_reward_size"
+            android:layout_height="@dimen/star_reward_size"
             android:layout_gravity="center"
             android:src="@drawable/star" />
             
     </FrameLayout>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### 2.3 主Activity实现
+### 2.3 主Activity实现（支持手机和平板）
 ```kotlin
 // MainActivity.kt
 class MainActivity : AppCompatActivity() {
@@ -173,6 +224,7 @@ class MainActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var startTime = 0L
     private val handler = Handler(Looper.getMainLooper())
+    private var isTablet = false
     
     // 预定义的卡片列表
     private val cards = listOf(
@@ -186,6 +238,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        // 检测是否是平板
+        isTablet = resources.configuration.smallestScreenWidthDp >= 600
+        
+        // 平板推荐横屏，手机随意
+        if (isTablet) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        }
         
         // 恢复进度
         currentCardIndex = Progress.getCurrentCardIndex()
@@ -440,6 +500,25 @@ res/raw/
 // 4. 内存泄漏测试
 - 连续播放所有卡片
 - 使用Profiler检查内存使用
+
+// 5. 多设备测试
+- 手机竖屏：UI元素大小合适
+- 手机横屏：布局不变形
+- 7寸平板：内容显示清晰
+- 10寸平板：充分利用屏幕空间
+- 旋转测试：状态保持正确
+```
+
+### 4.1.1 测试设备建议
+```
+必测真机（如果有）：
+- 家里的手机
+- 孩子用的平板
+
+模拟器测试：
+- Phone: Pixel 4 (5.7")
+- 7" Tablet: Nexus 7
+- 10" Tablet: Pixel C
 ```
 
 ### 4.2 性能优化
