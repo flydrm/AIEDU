@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 卡片背景drawable
+  ~ 
+  ~ 功能说明：
+  ~ 创建一个带圆角和阴影的卡片背景
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- 背景颜色 -->
+    <solid android:color="@color/background_card" />
+    
+    <!-- 圆角 -->
+    <corners android:radius="@dimen/card_corner_radius" />
+    
+    <!-- 边框（可选） -->
+    <stroke 
+        android:width="1dp"
+        android:color="@color/divider" />
+    
+</shape>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 尺寸资源定义（平板适配）
+  ~ 
+  ~ 功能说明：
+  ~ 为平板设备（最小宽度600dp）定义更大的尺寸值
+  ~ 
+  ~ 适配原则：
+  ~ - 文字大小增加约30%
+  ~ - 间距增加约50%
+  ~ - 交互元素增大，适合儿童操作
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<resources>
+    <!-- 通用间距（平板加大） -->
+    <dimen name="spacing_tiny">6dp</dimen>
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_medium">24dp</dimen>
+    <dimen name="spacing_large">36dp</dimen>
+    <dimen name="spacing_extra_large">48dp</dimen>
+    
+    <!-- 卡片相关（平板加大） -->
+    <dimen name="card_padding">32dp</dimen>
+    <dimen name="card_corner_radius">24dp</dimen>
+    <dimen name="card_elevation">12dp</dimen>
+    
+    <!-- 底部栏（平板加高） -->
+    <dimen name="bottom_bar_height">80dp</dimen>
+    
+    <!-- 文字大小（平板加大） -->
+    <dimen name="text_size_small">18sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="progress_text_size">24sp</dimen>
+    <dimen name="encouragement_text_size">32sp</dimen>
+    
+    <!-- 交互元素（平板加大） -->
+    <dimen name="interaction_hint_size">100dp</dimen>
+    <dimen name="star_reward_size">250dp</dimen>
+    <dimen name="button_min_size">64dp</dimen>
+    
+    <!-- 图标尺寸（平板加大） -->
+    <dimen name="icon_size_small">32dp</dimen>
+    <dimen name="icon_size_medium">48dp</dimen>
+    <dimen name="icon_size_large">64dp</dimen>
+</resources>

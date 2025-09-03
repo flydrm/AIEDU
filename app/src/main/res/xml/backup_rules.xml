@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 备份规则
+  ~ 
+  ~ 功能说明：
+  ~ Android 11及以下的备份规则配置
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<full-backup-content>
+    <!-- 备份SharedPreferences -->
+    <include domain="sharedpref" path="."/>
+    <!-- 排除缓存 -->
+    <exclude domain="cache" />
+    <!-- 排除临时文件 -->
+    <exclude domain="file" path="temp/"/>
+</full-backup-content>

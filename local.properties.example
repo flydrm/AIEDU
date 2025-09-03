@@ -1,0 +1,21 @@
+# 本地配置示例文件
+# 
+# 功能说明：
+# 存储本地开发环境的配置，不应提交到版本控制
+# 
+# 使用方法：
+# 1. 复制此文件为 local.properties
+# 2. 修改为你的本地配置
+# 
+# @author AI启蒙时光开发团队
+# @date 2025-01-03
+
+# Android SDK路径
+sdk.dir=/path/to/your/Android/Sdk
+
+# NDK路径（如果需要）
+# ndk.dir=/path/to/your/Android/Sdk/ndk/version
+
+# AI API配置（不要提交真实密钥）
+# ai.api.key=your_api_key_here
+# ai.api.url=https://api.openai.com/v1/

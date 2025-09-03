@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 文字气泡背景
+  ~ 
+  ~ 功能说明：
+  ~ 为AI生成的文字内容创建气泡背景
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <!-- 半透明白色背景 -->
+    <solid android:color="#E6FFFFFF" />
+    
+    <!-- 圆角 -->
+    <corners android:radius="12dp" />
+    
+    <!-- 内边距 -->
+    <padding
+        android:left="16dp"
+        android:top="8dp"
+        android:right="16dp"
+        android:bottom="8dp" />
+    
+</shape>

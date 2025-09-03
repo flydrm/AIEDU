@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 字符串资源定义
+  ~ 
+  ~ 功能说明：
+  ~ 定义应用中使用的所有文本字符串，便于维护和国际化
+  ~ 
+  ~ 命名规范：
+  ~ - 功能_类型_描述
+  ~ - 使用下划线分隔
+  ~ - 全小写字母
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<resources>
+    <!-- 应用基本信息 -->
+    <string name="app_name">AI启蒙时光</string>
+    
+    <!-- 主界面文本 -->
+    <string name="progress_format">%1$d / %2$d</string>
+    <string name="loading_text">正在准备内容…</string>
+    
+    <!-- 交互提示 -->
+    <string name="tap_hint_description">点击这里继续</string>
+    <string name="card_image_description">教育卡片图片</string>
+    <string name="pause_button_description">暂停播放</string>
+    <string name="play_button_description">继续播放</string>
+    
+    <!-- 奖励和鼓励 -->
+    <string name="reward_description">恭喜你完成了！</string>
+    <string name="default_encouragement">太棒了！</string>
+    <string name="encouragement_great">你真棒！</string>
+    <string name="encouragement_awesome">太厉害了！</string>
+    <string name="encouragement_continue">继续加油！</string>
+    <string name="encouragement_almost">马上就完成了！</string>
+    
+    <!-- 完成提示 -->
+    <string name="completion_title">学习完成！</string>
+    <string name="completion_message">今天的学习任务已经完成了，明天再来吧！</string>
+    <string name="completion_all_cards">哇！你已经学完了所有的卡片！</string>
+    
+    <!-- 时长控制 -->
+    <string name="time_limit_title">休息一下吧</string>
+    <string name="time_limit_message">你已经学习了%1$d分钟，该休息一下保护眼睛了！</string>
+    <string name="time_limit_continue">再玩5分钟</string>
+    <string name="time_limit_rest">好的，去休息</string>
+    
+    <!-- 错误提示 -->
+    <string name="error_load_resource">加载资源失败，请重试</string>
+    <string name="error_play_audio">播放音频失败</string>
+    <string name="error_network">网络连接失败，使用本地内容</string>
+    
+    <!-- 对话框按钮 -->
+    <string name="button_ok">好的</string>
+    <string name="button_cancel">取消</string>
+    <string name="button_retry">重试</string>
+    <string name="button_exit">退出</string>
+    
+    <!-- 学习统计 -->
+    <string name="stats_today_time">今日学习：%1$d分钟</string>
+    <string name="stats_total_days">坚持天数：%1$d天</string>
+    <string name="stats_completed_cards">已完成：%1$d张</string>
+    
+    <!-- AI相关提示 -->
+    <string name="ai_generating">正在生成内容…</string>
+    <string name="ai_failed">AI生成失败，使用默认内容</string>
+    <string name="ai_offline">离线模式，使用本地内容</string>
+    
+    <!-- 无障碍支持 -->
+    <string name="a11y_card_number">第%1$d张卡片，共%2$d张</string>
+    <string name="a11y_progress_percent">学习进度%1$d%%</string>
+</resources>
