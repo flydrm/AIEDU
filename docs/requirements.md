@@ -117,11 +117,16 @@ sequenceDiagram
 - 性能：启动、帧率、内存、包体指标达标。
 - 质量：通过测试用例；代码审查无P0/P1缺陷；崩溃率≤0.5%。
 
-## 6. 依赖说明
-- 端侧：TFLite/ONNX Runtime Mobile、MediaPipe Tasks、Porcupine/Vosk（KWS）。
-- 云侧：OpenAI兼容网关→ Gemini-2.5-Pro/GPT-5-Pro；Embeddings（Qwen3-Embed）；Reranker（BAAI）。
-- 数据：向量库（RAG可选）；埋点后端与指标看板。
-- AI服务配置：支持可定制 `apiBaseUrl` + `apiKey`（详见 docs/ai-config.md），以适配国内网络环境与多供应商切换。
+## 6. 依赖说明（纯客户端架构）
+- **架构说明**：本应用采用纯客户端架构，无自建服务端，所有功能在Android App内实现。
+- **端侧AI**：TFLite/ONNX Runtime Mobile（关键词唤醒）、MediaPipe Tasks（可选）、Porcupine/Vosk（KWS）。
+- **第三方API**：
+  - OpenAI兼容网关（LLM文本生成）：Gemini-2.5-Pro（主）/GPT-5-Pro（备）
+  - 嵌入向量服务：Qwen3-Embed
+  - 重排序服务：BAAI Reranker（可选）
+  - CDN/OSS：内容包下载存储
+- **本地存储**：Room Database（结构化数据）、DataStore（配置）、File System（媒体资源）。
+- **AI服务配置**：支持可定制 `apiBaseUrl` + `apiKey`（详见 docs/ai-config.md），以适配国内网络环境与多供应商切换。
 
 ## 7. 工作量评估（粗估）
 | 任务 | 负责人 | 工时 | 备注 |

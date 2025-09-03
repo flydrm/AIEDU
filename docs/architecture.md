@@ -1,15 +1,17 @@
 # 架构设计（MVP：3岁男孩-勇敢/逻辑/基础 + 红色偏好 + AI）
 
-文档版本: v1.0  
+文档版本: v1.1  
 创建日期: 2025-09-03  
+更新日期: 2025-01-03  
 作者: 架构助手  
 审核人: 待定
 
 ## 1. 目标与原则
 - 目标：可维护、可扩展、端侧优先、离线可用、隐私优先，面向MVP快速落地。
 - 原则：Clean Architecture + MVVM；KISS/DRY/YAGNI；模块解耦；中文注释强制。
+- **架构特点**：纯客户端架构，无自建服务端，仅依赖第三方API服务。
 
-## 2. 架构总览
+## 2. 架构总览（纯客户端）
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                           Presentation (App)                        │
@@ -21,25 +23,26 @@
 ┌─────────────────────────────────────────────────────────────────────┐
 │                              Domain                                 │
 │  UseCases:                                                          │
-│   - PlayCard / CompleteCard / GetNextCard (Bandit)                  │
+│   - PlayCard / CompleteCard / GetNextCard (本地Bandit)              │
 │   - DownloadTheme / ManageOffline                                   │
-│   - GetParentalReport (LLM) / SetTimeLimit / VerifyParentalGate     │
-│   - SetColorPreference(red)                                         │
+│   - GenerateParentalReport (调用AI API) / SetTimeLimit              │
+│   - SetColorPreference(red) / VerifyParentalGate                    │
 │  Repositories Interfaces                                            │
 └─────────────────────────────────────────────────────────────────────┘
                 │
 ┌─────────────────────────────────────────────────────────────────────┐
-│                               Data                                  │
-│  Local: Room (progress, downloads, prefs), DataStore(K/V)           │
-│  Remote: Retrofit(OpenAI网关/后端API)、Downloads、Crash/Analytics   │
-│  AI Edge: KWS/Intent(TFLite/ONNX)、MediaPipe Tasks                  │
-└─────────────────────────────────────────────────────────────────────┘
-                │
-┌─────────────────────────────────────────────────────────────────────┐
-│                     AI Services & Content Pipeline                  │
-│  - LLM: Gemini-2.5-Pro (主) / GPT-5-Pro(备)                         │
-│  - Embeddings: Qwen3-Embed；Reranker: BAAI                          │
-│  - TTS批处理/响度标准化；内容审核；RAG(可选, 家长引导)              │
+│                               Data Layer                            │
+│  本地存储:                                                          │
+│   - Room Database (进度/卡片/下载/奖励/日志)                         │
+│   - DataStore (用户偏好/应用配置)                                   │
+│   - File System (媒体资源/模型文件)                                 │
+│  第三方服务:                                                        │
+│   - OpenAI兼容API (LLM/Embeddings)                                  │
+│   - CDN/OSS (内容下载)                                              │
+│   - Crashlytics/Analytics (可选)                                    │
+│  端侧AI:                                                            │
+│   - TFLite/ONNX (KWS关键词唤醒)                                     │
+│   - MediaPipe (手势识别-可选)                                       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
