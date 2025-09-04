@@ -1,0 +1,63 @@
+# Android项目忽略文件
+# 
+# 功能说明：
+# 定义Git版本控制需要忽略的文件和目录
+# 
+# @author AI启蒙时光开发团队
+# @date 2025-01-03
+
+# 构建输出
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+/build/
+/app/build/
+/*/build/
+
+# 本地配置文件
+local.properties
+/app/src/main/assets/ai_config.json
+
+# Gradle文件
+.gradle/
+/gradle/wrapper/gradle-wrapper.jar
+
+# IDE文件
+.idea/
+*.iml
+.DS_Store
+
+# 签名文件
+*.jks
+*.keystore
+
+# 日志文件
+*.log
+
+# 系统文件
+Thumbs.db
+.DS_Store
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*~
+
+# Crashlytics
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+
+# 其他
+/captures
+.externalNativeBuild
+.cxx/
+.navigation/
+
+# 敏感信息
+*.key
+*.pem
+secrets.properties

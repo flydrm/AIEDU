@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 自定义进度条样式
+  ~ 
+  ~ 功能说明：
+  ~ 定义圆角的进度条样式，使用主题色
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <!-- 背景层 -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="4dp" />
+            <solid android:color="@color/progress_background" />
+        </shape>
+    </item>
+    
+    <!-- 进度层 -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="4dp" />
+                <solid android:color="@color/progress_color" />
+            </shape>
+        </clip>
+    </item>
+    
+</layer-list>

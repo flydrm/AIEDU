@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 奖励星星图标
+  ~ 
+  ~ 功能说明：
+  ~ 完成任务时显示的金色星星
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    
+    <!-- 星星主体 -->
+    <path
+        android:fillColor="@color/accent"
+        android:pathData="M50,10 L60,35 L85,35 L65,50 L75,75 L50,60 L25,75 L35,50 L15,35 L40,35 Z" />
+    
+    <!-- 星星高光 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:fillAlpha="0.3"
+        android:pathData="M50,10 L55,25 L70,25 L58,35 L63,50 L50,40 Z" />
+    
+</vector>

@@ -1,0 +1,7 @@
+{
+  "api_key": "YOUR_API_KEY_HERE",
+  "base_url": "https://api.openai.com/v1/",
+  "model": "gpt-3.5-turbo",
+  "api_secret": null,
+  "_comment": "这是AI配置示例文件。使用时请：1. 复制为 ai_config.json 2. 填入真实的API密钥 3. 不要提交到代码库"
+}

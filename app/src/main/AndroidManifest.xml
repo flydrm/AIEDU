@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ AndroidManifest.xml
+  ~ 
+  ~ 功能说明：
+  ~ 定义应用的基本信息、权限要求和组件声明
+  ~ 
+  ~ 主要配置：
+  ~ 1. 应用基本信息（包名、版本等）
+  ~ 2. 权限声明（网络、存储等）
+  ~ 3. Activity组件注册
+  ~ 4. 屏幕适配配置
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <!-- 权限声明 -->
+    <!-- 网络权限：用于AI API调用 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 网络状态权限：检查网络连接 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
+    <!-- 屏幕支持声明：支持手机和平板 -->
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true" />
+    
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.KidsEdu"
+        tools:targetApi="31">
+        
+        <!-- 主Activity：应用入口 -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensor">
+            
+            <!-- 声明为启动Activity -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+    </application>
+
+</manifest>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 主界面布局
+  ~ 
+  ~ 功能说明：
+  ~ 1. 显示教育卡片内容
+  ~ 2. 提供交互区域
+  ~ 3. 显示学习进度
+  ~ 4. 奖励动画容器
+  ~ 
+  ~ 布局特点：
+  ~ - 使用ConstraintLayout实现响应式布局
+  ~ - 支持手机和平板不同屏幕尺寸
+  ~ - 动态适配横竖屏
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".MainActivity">
+
+    <!-- 卡片内容区域 -->
+    <FrameLayout
+        android:id="@+id/cardContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/card_padding"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <!-- 卡片背景装饰 -->
+        <View
+            android:id="@+id/cardBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/card_background"
+            android:elevation="4dp" />
+        
+        <!-- 卡片图片 -->
+        <ImageView
+            android:id="@+id/cardImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/card_image_description"
+            tools:src="@tools:sample/backgrounds/scenic" />
+        
+        <!-- AI生成的文本内容（可选） -->
+        <TextView
+            android:id="@+id/aiTextContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_margin="16dp"
+            android:padding="12dp"
+            android:background="@drawable/text_bubble_background"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:visibility="gone"
+            tools:text="这是一辆红色的消防车" />
+        
+        <!-- 互动提示动画 -->
+        <ImageView
+            android:id="@+id/interactionHint"
+            android:layout_width="@dimen/interaction_hint_size"
+            android:layout_height="@dimen/interaction_hint_size"
+            android:layout_gravity="center"
+            android:src="@drawable/tap_hint"
+            android:visibility="gone"
+            android:contentDescription="@string/tap_hint_description" />
+            
+    </FrameLayout>
+    
+    <!-- 底部进度条和控制区 -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:orientation="horizontal"
+        android:background="@color/bottom_bar_bg"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/card_padding"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <!-- 进度文本 -->
+        <TextView
+            android:id="@+id/progressText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/progress_format"
+            android:textSize="@dimen/progress_text_size"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"
+            tools:text="1 / 20" />
+            
+        <!-- 进度条 -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:progressDrawable="@drawable/custom_progress_bar"
+            android:max="100"
+            tools:progress="25" />
+        
+        <!-- 暂停/播放按钮（可选功能） -->
+        <ImageButton
+            android:id="@+id/pauseButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_pause"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/pause_button_description"
+            android:visibility="gone" />
+            
+    </LinearLayout>
+    
+    <!-- 奖励动画容器（覆盖全屏） -->
+    <FrameLayout
+        android:id="@+id/rewardContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#CC000000"
+        android:clickable="true"
+        android:focusable="true">
+        
+        <!-- 星星奖励图片 -->
+        <ImageView
+            android:id="@+id/starReward"
+            android:layout_width="@dimen/star_reward_size"
+            android:layout_height="@dimen/star_reward_size"
+            android:layout_gravity="center"
+            android:src="@drawable/star_reward"
+            android:contentDescription="@string/reward_description" />
+        
+        <!-- 鼓励文字 -->
+        <TextView
+            android:id="@+id/encouragementText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="100dp"
+            android:text="@string/default_encouragement"
+            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            tools:text="太棒了！" />
+            
+    </FrameLayout>
+    
+    <!-- 加载指示器（用于AI内容生成时） -->
+    <ProgressBar
+        android:id="@+id/loadingIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

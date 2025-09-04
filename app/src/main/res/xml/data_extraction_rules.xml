@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 数据提取规则
+  ~ 
+  ~ 功能说明：
+  ~ Android 12+ 的备份规则配置
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- 允许备份SharedPreferences -->
+        <include domain="sharedpref" path="."/>
+        <!-- 排除临时文件 -->
+        <exclude domain="cache" />
+    </cloud-backup>
+</data-extraction-rules>

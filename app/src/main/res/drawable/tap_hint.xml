@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 点击提示图标
+  ~ 
+  ~ 功能说明：
+  ~ 显示一个手指点击的提示图标
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    
+    <!-- 手指形状 -->
+    <path
+        android:fillColor="@color/primary"
+        android:pathData="M24,4 C24,4 20,8 20,16 L20,28 C20,32 22,34 24,34 C26,34 28,32 28,28 L28,16 C28,8 24,4 24,4 Z" />
+    
+    <!-- 点击波纹效果 -->
+    <path
+        android:strokeColor="@color/primary_50"
+        android:strokeWidth="2"
+        android:pathData="M24,38 m-8,0 a8,8 0 1,1 16,0 a8,8 0 1,1 -16,0" />
+    
+    <path
+        android:strokeColor="@color/primary_20"
+        android:strokeWidth="2"
+        android:pathData="M24,38 m-12,0 a12,12 0 1,1 24,0 a12,12 0 1,1 -24,0" />
+    
+</vector>

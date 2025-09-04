@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 尺寸资源定义（手机默认值）
+  ~ 
+  ~ 功能说明：
+  ~ 定义应用中使用的各种尺寸值，便于统一管理和适配
+  ~ 
+  ~ 适配策略：
+  ~ - 这是手机的默认尺寸
+  ~ - 平板尺寸在values-sw600dp中定义
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<resources>
+    <!-- 通用间距 -->
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_extra_large">32dp</dimen>
+    
+    <!-- 卡片相关 -->
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_corner_radius">16dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
+    
+    <!-- 底部栏 -->
+    <dimen name="bottom_bar_height">60dp</dimen>
+    
+    <!-- 文字大小 -->
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="progress_text_size">18sp</dimen>
+    <dimen name="encouragement_text_size">24sp</dimen>
+    
+    <!-- 交互元素 -->
+    <dimen name="interaction_hint_size">60dp</dimen>
+    <dimen name="star_reward_size">150dp</dimen>
+    <dimen name="button_min_size">48dp</dimen>
+    
+    <!-- 图标尺寸 -->
+    <dimen name="icon_size_small">24dp</dimen>
+    <dimen name="icon_size_medium">36dp</dimen>
+    <dimen name="icon_size_large">48dp</dimen>
+</resources>

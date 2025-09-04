@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 颜色资源定义
+  ~ 
+  ~ 功能说明：
+  ~ 定义应用的颜色主题，采用温暖童趣的色彩方案
+  ~ 
+  ~ 设计理念：
+  ~ - 主色调：珊瑚红（孩子喜欢的红色系）
+  ~ - 辅助色：温暖的橙色、黄色
+  ~ - 背景色：柔和的米色系
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<resources>
+    <!-- 主题色 -->
+    <color name="primary">#FF6B6B</color>              <!-- 珊瑚红（主色） -->
+    <color name="primary_dark">#FF5252</color>         <!-- 深珊瑚红 -->
+    <color name="primary_light">#FF8787</color>        <!-- 浅珊瑚红 -->
+    
+    <!-- 强调色 -->
+    <color name="accent">#FFD93D</color>               <!-- 明黄色（奖励色） -->
+    <color name="accent_secondary">#6BCF7F</color>     <!-- 薄荷绿（成功色） -->
+    
+    <!-- 背景色 -->
+    <color name="background">#FFF5E6</color>           <!-- 米色背景 -->
+    <color name="background_card">#FFFFFF</color>      <!-- 卡片白色背景 -->
+    <color name="background_overlay">#80000000</color> <!-- 半透明遮罩 -->
+    
+    <!-- 底部栏背景 -->
+    <color name="bottom_bar_bg">#FFFBF0</color>       <!-- 浅米色 -->
+    
+    <!-- 文字颜色 -->
+    <color name="text_primary">#333333</color>         <!-- 主文字颜色 -->
+    <color name="text_secondary">#666666</color>       <!-- 次要文字颜色 -->
+    <color name="text_hint">#999999</color>            <!-- 提示文字颜色 -->
+    <color name="text_white">#FFFFFF</color>           <!-- 白色文字 -->
+    
+    <!-- 进度条颜色 -->
+    <color name="progress_background">#E0E0E0</color>  <!-- 进度条背景 -->
+    <color name="progress_color">@color/primary</color><!-- 进度条颜色 -->
+    
+    <!-- 状态颜色 -->
+    <color name="success">#4CAF50</color>              <!-- 成功绿 -->
+    <color name="warning">#FF9800</color>              <!-- 警告橙 -->
+    <color name="error">#F44336</color>                <!-- 错误红 -->
+    
+    <!-- 阴影和边框 -->
+    <color name="shadow">#1A000000</color>             <!-- 10%黑色阴影 -->
+    <color name="divider">#E0E0E0</color>              <!-- 分割线颜色 -->
+    
+    <!-- 透明度变体 -->
+    <color name="primary_10">#1AFF6B6B</color>         <!-- 10%透明度主色 -->
+    <color name="primary_20">#33FF6B6B</color>         <!-- 20%透明度主色 -->
+    <color name="primary_50">#80FF6B6B</color>         <!-- 50%透明度主色 -->
+</resources>

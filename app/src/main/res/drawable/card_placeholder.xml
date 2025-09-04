@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ 卡片占位图
+  ~ 
+  ~ 功能说明：
+  ~ 在真实图片加载前显示的占位图
+  ~ 
+  ~ @author AI启蒙时光开发团队
+  ~ @date 2025-01-03
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+    
+    <!-- 背景 -->
+    <path
+        android:fillColor="#FFF5E6"
+        android:pathData="M20,20 L180,20 Q200,20 200,40 L200,160 Q200,180 180,180 L20,180 Q0,180 0,160 L0,40 Q0,20 20,20 Z"/>
+    
+    <!-- 图片图标 -->
+    <path
+        android:fillColor="#FF6B6B"
+        android:fillAlpha="0.3"
+        android:pathData="M60,70 L140,70 L140,130 L60,130 Z"/>
+    
+    <!-- 山形图标 -->
+    <path
+        android:fillColor="#FF6B6B"
+        android:fillAlpha="0.5"
+        android:pathData="M60,110 L85,85 L110,110 L135,90 L140,95 L140,130 L60,130 Z"/>
+    
+    <!-- 太阳图标 -->
+    <circle
+        android:fillColor="#FFD93D"
+        android:fillAlpha="0.6"
+        android:cx="120"
+        android:cy="90"
+        android:r="10"/>
+    
+</vector>
